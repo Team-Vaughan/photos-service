@@ -76,22 +76,22 @@ export default class PhotosModal extends React.Component {
       <div className='photos-modal'>
         <div className = 'photo-carousel-header'>
           <div>
-            <button className = 'btn-carousel-close' onClick={this.handleCloseButtonClick.bind(this)}><i class="fas fa-times"></i> Close</button>
+            <button className = 'btn-carousel-close' onClick={this.handleCloseButtonClick.bind(this)}><i className="fas fa-times"></i> Close</button>
           </div>
           <div className = 'photo-counter'>
             { this.state.currentPhotoIndex + 1 }&nbsp;/&nbsp;{this.state.photoCount}
           </div>
           <div>
-            <i class="far fa-heart"></i>
+            <i className="far fa-heart"></i>
           </div>
         </div>
         <div className = 'photo-carousel-body'>
           <div>
-            <button className = 'btn-carousel' style = {{display: this.state.previousVisibility}} onClick={this.handlePreviousButtonClick.bind(this)}><i class="fas fa-angle-left"></i></button>
+            <button className = 'btn-carousel' style = {{display: this.state.previousVisibility}} onClick={this.handlePreviousButtonClick.bind(this)}><i className="fas fa-angle-left"></i></button>
           </div>
           <Photo imageURL = {this.state.currentPhoto.storage_url} />
           <div>
-            <button className = 'btn-carousel' style = {{display: this.state.nextVisibility}} onClick={this.handleNextButtonClick.bind(this)}><i class="fas fa-angle-right"></i></button>
+            <button className = 'btn-carousel' style = {{display: this.state.nextVisibility}} onClick={this.handleNextButtonClick.bind(this)}><i className="fas fa-angle-right"></i></button>
           </div>
         </div>
       </div>
