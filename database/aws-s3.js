@@ -5,12 +5,33 @@ const AWS = require('aws-sdk');
 
 const s3v2 = new AWS.S3();
 
-const s3 = new S3Client({ region: process.env.AWS_REGION });
+const s3 = new S3Client({ Region: process.env.AWS_REGION });
 
 AWS.config.update({
   accessKeyId: AWS_ACCESS_KEY_ID,
   secretAccessKey: AWS_SECRET_ACCESS_KEY
 });
+
+//list photos from s3 bucket
+const listPhotos = async () => {
+
+  const getParams = {
+    Bucket: 'sdc-airbnb-photos',
+  }
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const bucket = await s3v2.listObjects(getParams, (err, data) => {
+        if (err) console.log(err);
+        else {
+          resolve(data)
+        }
+      });
+    } catch(err) {
+      console.log(err);
+    }
+  })
+}
 
 // Get all buckets
 const getBuckets = async () => {
@@ -81,7 +102,8 @@ const uploadFile = async (fileStream, fileName) => {
     Body: fileStream.data,
     Key: `${fileName}.jpg`,
     ACL: 'public-read',
-    Bucket: AWS_BUCKET_NAME,
+    // Bucket: AWS_BUCKET_NAME,
+    Bucket: 'sdc-airbnb-photos',
     ContentType: 'image/jpeg',
   }
 
@@ -97,13 +119,13 @@ const uploadFile = async (fileStream, fileName) => {
     });
   });
 
-
 }
 
 module.exports = {
   createBucket,
   deleteBucket,
-  uploadFile
+  uploadFile,
+  listPhotos
 }
 
 
