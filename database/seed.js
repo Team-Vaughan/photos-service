@@ -2,11 +2,6 @@ const faker = require('faker');
 const { config } = require('../config.js');
 const { createBucket, deleteBucket, uploadFile, listPhotos }  = require('./aws-s3.js');
 
-//import psql
-
-//wipe current db
-
-
 
 const seed = async () => {
 
