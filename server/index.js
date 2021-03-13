@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const db = require('../database/index.js');
 const app = express();
 const PORT = 5005;
+const sequelize = require('../database/Models');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -81,6 +82,8 @@ app.delete('/rooms/deleteRoom', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log('server started at port: ', PORT);
+sequelize.sync({force: true}).then(() => {
+  app.listen(PORT, () => {
+    console.log('server started at port: ', PORT);
+  });
 });

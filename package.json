@@ -24,8 +24,11 @@
     "jquery": "^3.1.1",
     "mocha": "^8.2.1",
     "mongoose": "^5.11.13",
+    "pg": "^8.5.1",
+    "pgtools": "^0.3.1",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "sequelize": "^6.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
