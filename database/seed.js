@@ -2,8 +2,6 @@ const faker = require('faker');
 const { config } = require('../config.js');
 const { createBucket, deleteBucket, uploadFile, listPhotos }  = require('./aws-s3.js');
 const sequelize = require('../database/Models');
-// const photos = require('../database/Models/photos.js')
-
 
 const seed = async () => {
 
