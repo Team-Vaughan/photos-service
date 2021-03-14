@@ -1,45 +1,24 @@
-const mongoose = require('mongoose');
 const faker = require('faker');
-const { Photo } = require('./schema.js');
 const { config } = require('../config.js');
-const { createBucket, deleteBucket, uploadFile }  = require('./aws-s3.js');
-const { getRandomImage } = require('./fileHelper.js');
+const { createBucket, deleteBucket, uploadFile, listPhotos }  = require('./aws-s3.js');
+const sequelize = require('../database/Models');
 
-const {db: {host, port, name}} = config;
+const seed = async () => {
 
-mongoose.connect(`mongodb://${host}:${port}/${name}`, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-});
+  const photos = await listPhotos();
 
-Photo.deleteMany({}).then(() => {
-  console.log('deleted all photos..');
-  seed();
-});
-
-const seed = async() => {
-  // deleteBucket can be only used if bucket is empty
-  // await deleteBucket();
-  await createBucket();
-  for (let i = 100; i < 200; i++) {
-    let isPrimary = true;
-    for (let j = 100; j < 105; j++) {
-      let imageName = faker.commerce.productAdjective();
-      let imageStream = await getRandomImage();
-      let uploadURL = await uploadFile(imageStream, imageName + i.toString() + j.toString());
-      let propertyPhoto = new Photo({
-        room_id: i,
-        name: imageName,
-        photo_id: i.toString() + j.toString(),
-        caption: faker.commerce.productName(),
-        is_primary: isPrimary,
-        storage_url: uploadURL
+  for (let i = 0; i < 1000; i++) {
+    photos.Contents.forEach(photo => {
+      const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
+      const name = photo.Key.split('.')[0];
+      const caption = faker.commerce.productName();
+      sequelize.models.photos.create({
+        storage_url,
+        name,
+        caption
       });
-      propertyPhoto.save().then(() => {
-        console.log('saved photo ',j ,' in db and s3 for room id: ', i);
-      });
-      isPrimary = false;
-    }
-  }
+    });
+  };
 };
+
+seed();
