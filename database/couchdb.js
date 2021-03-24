@@ -8,22 +8,39 @@ const { listPhotos }  = require('./aws-s3.js');
 const seed = async (database) => {
 
   const photos = await listPhotos();
-  const docs = [];
+  let docs = [];
 
-  for (let i = 0; i < 998; i++) {
-    photos.Contents.forEach(photo => {
-      const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
-      const name = photo.Key.split('.')[0];
-      const caption = faker.commerce.productName();
-      const is_primary = i % 5 === 0;
-      docs.push({ storage_url, name, caption, is_primary });
-    });
-  };
+  for (let run = 0; run < 10000; run++) {
+    for (let i = 0; i < 5; i++) {
+      let roomPhotos = [];
+      photos.Contents.forEach((photo, j) => {
+        if (j % 5 === 0) {
+          const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
+          const name = photo.Key.split('.')[0];
+          const caption = faker.commerce.productName();
+          const is_primary = true;
+          roomPhotos.push({ storage_url, name, caption, is_primary });
+          const room_number = (run + i + j);
+          docs.push({room_number, photos: roomPhotos});
+          roomPhotos = [];
+        } else {
+          const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
+          const name = photo.Key.split('.')[0];
+          const caption = faker.commerce.productName();
+          const is_primary = false;
+          roomPhotos.push({ storage_url, name, caption, is_primary });
+        }
+      });
+    };
 
-  try {
-    const response = await database.bulk({ docs });
-  } catch(e) {
-    console.error(e);
+    try {
+      console.log(`finished ${run} run`);
+      const response = await database.bulk({ docs });
+      docs = [];
+    } catch(e) {
+      console.error(e);
+    }
+
   }
 
 };
@@ -37,8 +54,8 @@ const createDB = async () => {
   } catch(e) {
     console.error(e);
   }
-}
+};
 
 createDB().then(database => {
   seed(database);
-})
+});
