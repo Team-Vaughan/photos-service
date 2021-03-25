@@ -9,6 +9,7 @@ const seed = async (database) => {
 
   const photos = await listPhotos();
   let docs = [];
+  let room_number = 0;
 
   for (let run = 0; run < 10000; run++) {
     for (let i = 0; i < 5; i++) {
@@ -20,7 +21,7 @@ const seed = async (database) => {
           const caption = faker.commerce.productName();
           const is_primary = true;
           roomPhotos.push({ storage_url, name, caption, is_primary });
-          const room_number = (run + i + j);
+          room_number += 1;
           docs.push({room_number, photos: roomPhotos});
           roomPhotos = [];
         } else {
