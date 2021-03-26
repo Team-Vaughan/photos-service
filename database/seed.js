@@ -13,18 +13,15 @@ const seed = async (database) => {
   for (let run = 0; run < 10000; run++) {
     for (let i = 0; i < 5; i++) {
       s3Photos.Contents.forEach((photo, j) => {
+        const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
+        const name = photo.Key.split('.')[0];
+        const caption = faker.commerce.productName();
         if (j % 5 === 0) {
-          const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
-          const name = photo.Key.split('.')[0];
-          const caption = faker.commerce.productName();
           const is_primary = true;
           room_number += 1;
           photos.push({ storage_url, name, caption, is_primary, room_number });
           rooms.push({ room_number });
         } else {
-          const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`
-          const name = photo.Key.split('.')[0];
-          const caption = faker.commerce.productName();
           const is_primary = false;
           photos.push({ storage_url, name, caption, is_primary });
         }
