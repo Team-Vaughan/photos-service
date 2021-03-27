@@ -19,7 +19,7 @@ const models = [
 
 for (let modelDefiner of models) {
   modelDefiner(sequelize);
-};
+}
 
 applyAdditionalSetup(sequelize);
 
