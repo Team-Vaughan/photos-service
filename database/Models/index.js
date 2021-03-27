@@ -7,22 +7,19 @@ const sequelize = new Sequelize({
   database: 'sdc',
   password: 'test',
   port: 5432,
-  host: 'localhost'
+  host: 'localhost',
+  logging: false
 });
 
 const models = [
   require('./photos'),
-  //add other url model here
+  require('./rooms')
 ];
 
 for (let modelDefiner of models) {
   modelDefiner(sequelize);
 }
 
-//for additional relationships
-// applyAdditionalSetup(sequelize);
+applyAdditionalSetup(sequelize);
 
 module.exports = sequelize;
-
-
-///will break out urls from rest Photos table bc photos to urls is a 1:M relationship
