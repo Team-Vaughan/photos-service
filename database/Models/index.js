@@ -1,13 +1,14 @@
 const { Sequelize } = require('sequelize');
 const { applyAdditionalSetup } = require('./additional-setup');
+const dotenv = require('dotenv');
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  user: 'christophertulin',
+  user: process.env.POSTGRES_USER,
   database: 'sdc',
-  password: 'test',
-  port: 5432,
-  host: 'localhost',
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.PORT,
+  host: process.env.POSTGRES_HOST,
   logging: false
 });
 
@@ -18,7 +19,7 @@ const models = [
 
 for (let modelDefiner of models) {
   modelDefiner(sequelize);
-}
+};
 
 applyAdditionalSetup(sequelize);
 
