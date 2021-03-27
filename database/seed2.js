@@ -26,34 +26,42 @@ const seed = async (database) => {
     }
   });
 
-
-  let rooms = [];
   let roomNumber = 0;
 
-  for (let i = 0; i < 1000; i ++) {
-    rooms.push({ roomNumber });
-    roomNumber++;
-  }
+  for (let run = 0; run < 10000; run++) {
 
-  try {
-    await sequelize.models.rooms.bulkCreate(rooms);
-  } catch(e) {
-    console.error(e);
-  }
+    let rooms = [];
 
-  for (const room of await sequelize.models.rooms.findAll()) {
-    const roomPhotos = returnRandomIndex(photoOptions);
-
-    roomPhotos.forEach(pic => {
-      pic.roomRoomNumber = room.roomNumber;
-    });
-    try {
-      await sequelize.models.photos.bulkCreate(roomPhotos);
-    } catch (e) {
-      console.error(e)
+    for (let i = 0; i < 1000; i ++) {
+      rooms.push({ roomNumber });
+      roomNumber++;
     }
 
-  }
+    try {
+      await sequelize.models.rooms.bulkCreate(rooms);
+    } catch(e) {
+      console.error(e);
+    }
+
+    for (const room of rooms) {
+
+      const roomPhotos = returnRandomIndex(photoOptions);
+
+      roomPhotos.forEach(pic => {
+        pic.roomRoomNumber = room.roomNumber;
+      });
+
+      try {
+        await sequelize.models.photos.bulkCreate(roomPhotos);
+      } catch (e) {
+        console.error(e)
+      }
+
+    };
+
+    console.log(`Completed ${run} run`);
+
+  };
 
 };
 
