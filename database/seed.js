@@ -10,7 +10,7 @@ const seed = async (database) => {
   let photos = [];
   let roomNumber = 0;
 
-  for (let run = 0; run < 10000; run++) {
+  for (let run = 0; run < 1; run++) {
     for (let i = 0; i < 5; i++) {
       s3Photos.Contents.forEach((photo, j) => {
         const storage_url = `https://sdc-airbnb-photos.s3.us-east-2.amazonaws.com/${photo.Key}`

@@ -1,25 +1,15 @@
-const mongoose = require('mongoose');
-const { Photo } = require('./schema.js');
-const { config } = require('../config.js');
+const { models } = require('./Models');
 
-const { db: { host, port, name } } = config;
-
-mongoose.connect(`mongodb://${host}:${port}/${name}`, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-});
-
-const getPhotosByRoomId = (room_id) => {
-  return new Promise((resolve, reject) => {
-    Photo.find({room_id}, (err, photos) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(photos);
-      }
-    });
+const getPhotosByRoomId = async (id) => {
+  const numFromId = parseInt(id)
+  console.log(typeof numFromId)
+  const photos = await models.rooms.findAll({
+    where: {
+      roomNumber: numFromId
+    },
+    // include: [photos]
   });
+  console.log(photos)
 };
 
 const addRoomPhotos = (body) => {
@@ -95,7 +85,7 @@ const deleteRoom = (room_id) => {
 
 module.exports = {
   getPhotosByRoomId,
-  addRoomPhotos,
-  updateRoomPhoto,
-  deleteRoom
+  // addRoomPhotos,
+  // updateRoomPhoto,
+  // deleteRoom
 };
