@@ -21,84 +21,70 @@ const getPhotosByRoomId = id => {
     } else {
       reject('No photos found');
     }
+
   });
 
 };
 
-const addRoomPhotos = (body) => {
+const addRoomPhotos = body => {
 
   const {
-    room_id,
+    roomNumber,
     name,
     caption,
     storage_url
   } = body;
 
-  return new Promise((resolve, reject) => {
-    Photo.find({room_id}, (err, photos) => {
-      if (err) {
-        reject(err);
-      } else {
-        const propertyPhoto = new Photo({
-          room_id,
-          name,
-          caption,
-          is_primary: false,
-          storage_url
-        });
-        propertyPhoto.save().then(() => {
-          resolve('saved photo');
-        });
-      }
-    });
+  return new Promise(async (resolve, reject) => {
+    try {
+      await models.photos.create(body);
+      resolve('successfully added photo to room');
+    } catch(e) {
+      reject(e);
+    }
   });
 };
 
-const updateRoomPhoto = (body) => {
+const updateRoomPhoto = body => {
 
-  const { room_id, _id, ...dataToUpdate } = body;
+  const { roomNumber, id, ...dataToUpdate } = body;
 
-  return new Promise((resolve, reject) => {
-    Photo.find({room_id}, (err, photos) => {
-      if (err) {
-        reject(err);
-      } else {
-        let updated = false;
-        photos.forEach(photo => {
-          if (photo._id.toString() === _id) {
-            for (let key in photo) {
-              if (typeof dataToUpdate[key] === 'string') {
-                photo[key] = dataToUpdate[key];
-                photo.save();
-                updated = true;
-              }
-            }
-          }
+  return new Promise(async (resolve, reject) => {
+
+    const photo = await models.photos.findOne({ where: { id } });
+
+    if (photo) {
+      photo.update(dataToUpdate)
+        .then(response=> {
+          resolve(response);
         });
-        updated ? resolve('Updated photo') : reject('Unable to find');
-      }
-    });
+    } else {
+      reject('Could not find photo to update');
+    }
   });
 };
 
-const deleteRoom = (room_id) => {
-  return new Promise((resolve, reject) => {
-    Photo.find({room_id}, (err, roomPhotos) => {
-      if (err) {
-        reject(err);
-      } else {
-        roomPhotos.forEach(room => {
-          room.remove();
-        });
-        resolve('Done');
-      }
+const deleteRoom = roomNumber => {
+  return new Promise(async (resolve, reject) => {
+    const rooms = await models.rooms.findAll({ where: { roomNumber } });
+    const photos = await models.photos.findAll({ where: { roomRoomNumber: roomNumber } });
+
+    rooms.forEach(room => {
+      room.destroy();
     });
+
+    photos.forEach(photo => {
+      photo.destroy();
+    });
+
+    resolve('Room deleted');
+
   });
 };
 
 module.exports = {
   getPhotosByRoomId,
-  // addRoomPhotos,
-  // updateRoomPhoto,
-  // deleteRoom
+  addRoomPhotos,
+  updateRoomPhoto,
+  deleteRoom
 };
