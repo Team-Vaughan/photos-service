@@ -1,15 +1,28 @@
 const { models } = require('./Models');
 
-const getPhotosByRoomId = async (id) => {
-  const numFromId = parseInt(id)
-  console.log(typeof numFromId)
-  const photos = await models.rooms.findAll({
-    where: {
-      roomNumber: numFromId
-    },
-    // include: [photos]
+const getPhotosByRoomId = id => {
+
+  const numFromId = parseInt(id);
+
+  return new Promise(async (resolve, reject) => {
+    const roomAndPhotoData = await models.rooms.findAll({
+      include: [
+        {
+          model: models.photos,
+          where: { roomRoomNumber: id }
+        }
+      ]
+    });
+
+    const { photos } = roomAndPhotoData[0];
+
+    if (photos.length) {
+      resolve(photos);
+    } else {
+      reject('No photos found');
+    }
   });
-  console.log(photos)
+
 };
 
 const addRoomPhotos = (body) => {
