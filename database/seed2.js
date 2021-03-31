@@ -28,11 +28,11 @@ const seed = async (database) => {
 
   let roomNumber = 0;
 
-  for (let run = 0; run < 10000; run++) {
+  for (let run = 0; run < 1000; run++) {
 
     let rooms = [];
 
-    for (let i = 0; i < 1000; i ++) {
+    for (let i = 0; i < 10000; i ++) {
       rooms.push({ roomNumber });
       roomNumber++;
     }
@@ -43,21 +43,24 @@ const seed = async (database) => {
       console.error(e);
     }
 
+    const photosToAdd = [];
+
     for (const room of rooms) {
 
       const roomPhotos = returnRandomIndex(photoOptions);
 
       roomPhotos.forEach(pic => {
         pic.roomRoomNumber = room.roomNumber;
+        photosToAdd.push(pic);
       });
 
-      try {
-        await sequelize.models.photos.bulkCreate(roomPhotos);
-      } catch (e) {
-        console.error(e)
-      }
-
     };
+
+    try {
+      await sequelize.models.photos.bulkCreate(photosToAdd);
+    } catch (e) {
+      console.error(e);
+    }
 
     console.log(`Completed ${run} run`);
 
