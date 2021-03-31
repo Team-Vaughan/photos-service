@@ -8,7 +8,7 @@ module.exports = sequelize => {
       autoIncrement: true,
       type: DataTypes.INTEGER
     },
-    room_number: {
+    roomNumber: {
       primaryKey: true,
       type: DataTypes.INTEGER
     }
