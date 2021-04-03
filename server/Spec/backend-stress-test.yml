@@ -1,0 +1,16 @@
+config:
+  target: "http://localhost:5005"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 500
+      name: Ramp up load
+scenarios:
+  # One example scenario, can add more api requests here
+  - name: "Get photos by Room Number"
+    flow:
+      - get:
+          url: "/rooms/111/"
