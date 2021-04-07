@@ -13,7 +13,7 @@
     "seed": "node ./database/seed.js && exit 1",
     "lint": "eslint **/*.jsx ./database/*.js ./server/*.js",
     "test": "jest",
-    "test:stress": "$(npm bin)/artillery ./server/Spec/backend-stree-test.yml"
+    "test:stress": "$(npm bin)/artillery run ./server/Spec/backend-stress-test.yml"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.4.1",
