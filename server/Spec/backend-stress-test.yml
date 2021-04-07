@@ -5,7 +5,6 @@ config:
       arrivalRate: 5
       name: Warm up
     - duration: 120
-      arrivalRate: 5
       arrivalRate: 500
       name: Sustained Stress Load
   payload:
