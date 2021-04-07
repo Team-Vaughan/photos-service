@@ -1,3 +1,4 @@
+require('newrelic');
 const app = require('./app');
 const PORT = process.env.PORT || 5005;
 const sequelize = require('../database/Models');

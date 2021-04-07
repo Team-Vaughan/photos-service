@@ -12,7 +12,8 @@
     "start": "nodemon server",
     "seed": "node ./database/seed.js && exit 1",
     "lint": "eslint **/*.jsx ./database/*.js ./server/*.js",
-    "test": "jest"
+    "test": "jest",
+    "test:stress": "$(npm bin)/artillery ./server/Spec/backend-stree-test.yml"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.4.1",
@@ -25,6 +26,7 @@
     "mocha": "^8.2.1",
     "mongoose": "^5.11.13",
     "nano": "^9.0.3",
+    "newrelic": "^7.2.1",
     "pg": "^8.5.1",
     "pgtools": "^0.3.1",
     "react": "^17.0.1",
@@ -37,6 +39,7 @@
     "@babel/preset-react": "^7.0.0",
     "@shelf/jest-mongodb": "^1.2.3",
     "@testing-library/react": "^11.2.3",
+    "artillery": "^1.6.2",
     "babel-loader": "^8.0.5",
     "css-loader": "^5.0.1",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",

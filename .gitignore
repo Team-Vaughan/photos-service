@@ -27,3 +27,9 @@ client/dist/
 #secrets
 .env
 
+#New Relic
+nrdiag-filelist.txt
+nrdiag-output.json
+nrdiag-output.zip
+/nrdiag
+
