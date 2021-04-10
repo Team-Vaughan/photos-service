@@ -13,11 +13,14 @@ const getPhotosByRoomId = id => {
         }
       ]
     });
+    if (roomAndPhotoData[0]) {
+      const { photos } = roomAndPhotoData[0];
 
-    const { photos } = roomAndPhotoData[0];
-
-    if (photos.length) {
-      resolve(photos);
+      if (photos.length) {
+        resolve(photos);
+      } else {
+        reject('No photos found');
+      }
     } else {
       reject('No photos found');
     }
