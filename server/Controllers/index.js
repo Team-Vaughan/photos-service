@@ -7,6 +7,9 @@ const getRoomPhotosByNumber = async (req, res) => {
     const photos = await db.getPhotosByRoomId(id);
     const response = [];
     photos.forEach((photo, i) => {
+      if (photo.dataValues.is_primary === null) {
+        photo.dataValues.is_primary = true;
+      }
       response.push(photo.dataValues);
     });
 
