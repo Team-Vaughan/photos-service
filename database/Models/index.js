@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const { applyAdditionalSetup } = require('./additional-setup');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 
 const sequelize = new Sequelize('sdc', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
   dialect: 'postgres',
