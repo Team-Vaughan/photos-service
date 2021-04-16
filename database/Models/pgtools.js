@@ -20,6 +20,7 @@ pgtools.dropdb(config, 'sdc', (err, res) => {
       process.exit(-1);
     }
     console.log(res);
+
   });
 
   console.log(res);
