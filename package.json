@@ -11,6 +11,7 @@
     "build": "webpack -d --watch",
     "start": "nodemon server",
     "seed": "node ./database/seed.js && exit 1",
+    "seed-ec2": "node ./database/ec2-seed.js && exit 1",
     "lint": "eslint **/*.jsx ./database/*.js ./server/*.js",
     "test": "jest",
     "test:stress": "$(npm bin)/artillery run ./server/Spec/backend-stress-test.yml"
