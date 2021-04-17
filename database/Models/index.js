@@ -6,7 +6,13 @@ const sequelize = new Sequelize('sdc', process.env.POSTGRES_USER, process.env.PO
   dialect: 'postgres',
   port: process.env.PORT,
   host: process.env.POSTGRES_HOST,
-  logging: false
+  logging: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
 });
 
 const models = [

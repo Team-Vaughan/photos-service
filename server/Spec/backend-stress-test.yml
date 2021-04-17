@@ -11,9 +11,10 @@ config:
     path: "id.csv"
     fields:
       - "id"
+    order: "sequence"
 scenarios:
   # One example scenario, can add more api requests here
   - name: "Get photos by Room Number"
     flow:
       - get:
-          url: "/rooms/{{ id }}/"
+          url: "/rooms/{{ id }}/getPhotosByRoomId"
