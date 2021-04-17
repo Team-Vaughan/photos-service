@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/rooms/:id', express.static(__dirname + '/../client/dist'));
 app.use('/rooms/:id', express.static(__dirname + '/../public'));
+app.use(express.static(__dirname + '/../public'));
 
 
 app.get('/rooms/:id/getPhotosByRoomId', (req, res, next) => {
