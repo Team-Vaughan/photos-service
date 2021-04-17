@@ -1,4 +1,5 @@
 const db = require('../../database');
+const cache = require('express-redis-cache')();
 
 const getRoomPhotosByNumber = async (req, res) => {
   const { id } = req.params;
@@ -48,6 +49,14 @@ const addPhotoToRoom = async (req, res) => {
 const updateRoomPhoto = async (req, res) => {
   const { roomNumber, id } = req.body;
 
+  cache.del(roomNumber, (err, deleted) => {
+    if (err) {
+      console.error(`Error removing ${roomNumber} from cache when updating photo`)
+    } else {
+      console.log(`successfully deleted ${deleted} photos from cache`);
+    }
+  });
+
   if (!roomNumber || !id) {
     res.status(500).send('Must specificy both roomNumber and photo id');
   } else {
@@ -62,6 +71,14 @@ const updateRoomPhoto = async (req, res) => {
 
 const deleteRoom = async (req, res) => {
   const { roomNumber } = req.body;
+
+  cache.del(roomNumber, (err, deleted) => {
+    if (err) {
+      console.error(`Error removing ${roomNumber} from cache when updating photo`)
+    } else {
+      console.log(`successfully deleted ${deleted} room from cache`);
+    }
+  });
 
   if (!roomNumber) {
     res.status(500).send('ID does not match record in database');
