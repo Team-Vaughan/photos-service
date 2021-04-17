@@ -1,7 +1,7 @@
 //Use this file to delete existing and create new db w/o using psql CLI
 const pgtools = require('pgtools');
 const dotenv = require('dotenv');
-dotenv.config({ path: '../../.env' });
+dotenv.config();
 
 const config = {
   user: process.env.POSTGRES_USER,
